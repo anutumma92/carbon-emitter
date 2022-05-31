@@ -1,0 +1,149 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "COVID-19 Data API",
+        "description": "This is an API that scrape data from https://www.worldometers.info/coronavirus/ and serve the data in JSON format",
+        "contact": {
+            "name": "Developer",
+            "email": "haniefhan@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/latest_covid_data": {
+            "get": {
+                "tags": [
+                    "Covid Data"
+                ],
+                "operationId": "/latest_covid_data",
+                "parameters": [
+                    {
+                        "name": "country_name",
+                        "in": "query",
+                        "description": "Country name you want to get the data, you can see the list with accessing /get_countries",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "USA"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns latest COVID-19 data based on country inputted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "": {
+                                            "$ref": "#/components/schemas/CovidData"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/top_ten_covid_case": {
+            "get": {
+                "tags": [
+                    "Covid Data"
+                ],
+                "operationId": "/top_ten_covid_case",
+                "responses": {
+                    "200": {
+                        "description": "Returns top ten COVID-19 case data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CovidData"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/get_countries": {
+            "get": {
+                "tags": [
+                    "Master Data"
+                ],
+                "operationId": "/get_countries",
+                "responses": {
+                    "200": {
+                        "description": "Returns list of countries in table",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": [
+                                            "USA",
+                                            "India",
+                                            "Brazil",
+                                            "UK",
+                                            "Russia"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CovidData": {
+                "properties": {
+                    "country_rank": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "country_name": {
+                        "type": "string",
+                        "example": "USA"
+                    },
+                    "total_cases": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "42479780"
+                    },
+                    "new_cases": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "0"
+                    },
+                    "total_deaths": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "685023"
+                    },
+                    "new_deaths": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "0"
+                    },
+                    "total_recovered": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "32271084"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CovidData"
+                }
+            }
+        }
+    }
+}
