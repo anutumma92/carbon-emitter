@@ -6,8 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - "4040:4040"
+      - "3000:3000"
+      - "8080:8080"
     volumes:
       - ./:/var/www/current/
     working_dir: /var/www/current
-    command: php -S 0.0.0.0:8080 public/index.php
+    command: php -S 0.0.0.0:4040 public/index.php

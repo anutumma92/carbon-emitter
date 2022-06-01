@@ -14,7 +14,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return view('index');
+    return response()->json([ 'version' => $router->app->version()]);
 });
 
 $router->get('/key', function() {
