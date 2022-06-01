@@ -37,11 +37,9 @@ php7 -r "unlink('composer-setup.php');"
 # addgroup -g 82 -S www-data \
 # adduser -u 82 -D -S -G www-data www-data
 
-# copy all of the file in folder to /src
-COPY . /src
-WORKDIR /src
+RUN apk add --update nodejs npm
 
-RUN composer update
+#RUN composer update
 
 # ADD .env.example /src/.env
 # RUN chmod -R 777 storage

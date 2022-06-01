@@ -1,5 +1,14 @@
 # Lumen PHP Framework
 
+## Setup
+- Clone the repository.
+- open the directory from terminal and run `docker-compose up --build`
+- The application will run on http://localhost:8080/
+- Go inside the container, `docker exec -it carbon-emitter-app-1 /bin/sh` and run the following commands
+  - `composer -o install`
+  - `npm -o install`
+
+
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
 [![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
