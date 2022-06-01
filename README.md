@@ -3,10 +3,11 @@
 ## Setup
 - Clone the repository.
 - open the directory from terminal and run `docker-compose up --build`
-- The application will run on http://localhost:8080/
-- Go inside the container, `docker exec -it carbon-emitter-app-1 /bin/sh` and run the following commands
+- The application will run on http://localhost:4040/
+- Go inside the container, 
+  - `docker exec -it carbon_emitter_app_1 /bin/sh` and run the following commands
   - `composer -o install`
-  - `npm -o install`
+  - `cd client && npm -o install`
 
 
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
