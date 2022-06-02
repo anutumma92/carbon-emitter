@@ -20,3 +20,15 @@ $router->get('/', function () use ($router) {
 $router->get('/key', function() {
     return \Illuminate\Support\Str::random(32);
 });
+
+//$router->group(['middleware' => 'cors', 'prefix' => 'admin'], function () use ($router) {
+//
+//    $router->get('/', function ()    {
+//        return response('Under cors');
+//    });
+//});
+
+$router->group(['prefix' => 'crud'], function () use ($router) {
+    $router->get('/','\App\Http\Controllers\Controller@method');
+});
+
