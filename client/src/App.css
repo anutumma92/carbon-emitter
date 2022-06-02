@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.searchBtn {
+    width: 100%;margin-top: 32px;height: 38px;
+}
+
+#infoDiv {
+    text-align: left;
+}
+
+#map {
+    background-color: grey;
+}
+
+.logo {
+    width: 30px;
+}
