@@ -29,7 +29,7 @@ $router->get('/key', function() {
 //});
 
 
-$router->get('/route/calculate','\App\Http\Controllers\Routing@calculate');
+$router->post('/route/calculate','\App\Http\Controllers\Routing@calculate');
 
 $router->group(['prefix' => 'crud'], function () use ($router) {
     $router->get('/','\App\Http\Controllers\Controller@method');

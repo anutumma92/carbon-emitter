@@ -9,7 +9,7 @@ class GenericResponse
     public static function success($data){
 
         return response([
-            'success' => false,
+            'success' => true,
             'error_message' => '',
             'data' => $data
         ]);

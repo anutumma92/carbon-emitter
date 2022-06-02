@@ -12,10 +12,26 @@ class Routing extends BaseController
 {
     public function calculate(Request $request)
     {
+        $requestBody = (array) json_decode($request->getContent());
+
         try {
             $service = new HereMapsService();
             $calculation = $service->calculateRoute();
-            return GenericResponse::success($calculation);
+
+            $response = [];
+            foreach ($calculation as $route) {
+                $climatiqService = new ClimatiqService([
+                    'emission_factor' => $requestBody['vehicle_type'],
+                    'parameters' => [
+                        'weight' => $calculation['total_weight'],
+                        'weight_unit' => "kg",
+                        'distance' => $calculation['total_distance'],
+                        'distance_unit' => "km"
+                    ]
+                ]);
+            }
+
+            return GenericResponse::success($response);
 
         } catch (\Exception $error)
         {
