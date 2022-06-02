@@ -14,7 +14,7 @@ class Routing extends BaseController
         try{
             $service = new HereMapsService();
             $calculation = $service->calculateRoute();
-            return GenericResponse::success([]);
+            return GenericResponse::success($calculation);
 
         }catch (\Exception $error)
         {
