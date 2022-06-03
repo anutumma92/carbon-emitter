@@ -52,3 +52,9 @@
 .logo {
     width: 30px;
 }
+
+.greenest {
+    color: green;
+    width: 30px;
+    height: 30px;
+}

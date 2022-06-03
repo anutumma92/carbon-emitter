@@ -1,13 +1,16 @@
 import { useState } from "react";
 import './App.css';
 import Address from "./Partial/Address";
-import Map from "./Partial/Map";
+import apiConsumer from "./helper/apiConsumer";
+import List from "./List";
 
 const vehicleTypes = {
-    'freight_vehicle-vehicle_type_hgv-fuel_source_cng-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_na': 'CNG HGV (3.5t - 7.5t)',
-    'freight_vehicle-vehicle_type_hgv-fuel_source_cng-vehicle_weight_gt_7.5t_lt_12t-percentage_load_na': 'CNG HGV (7.5t - 12t)',
-    'freight_vehicle-vehicle_type_truck_light-fuel_source_cng-vehicle_weight_na-percentage_load_na': 'CNG light-duty truck'
-};
+    'freight_vehicle_wtt-vehicle_type_van-fuel_source_diesel-vehicle_weight_1.305t_lt_1.74t': 'UP_TO_3T',
+    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_100': 'UP_TO_7T',
+    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_17t-percentage_load_100': 'UP_TO_12T',
+    'freight_vehicle-vehicle_type_hgv_articulated-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_10': 'UP_TO_40T',
+    'freight_vehicle-vehicle_type_hgv_articulated_refrig-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_100': 'FRIGO'
+}
 
 function App() {
     const [form, setForm] = useState({
@@ -17,6 +20,8 @@ function App() {
         'vehicle_type': undefined,
     });
 
+    const [result, setResult] = useState([]);
+
     const handleChange = (field, value) => {
         form[field] = value;
         setForm(form);
@@ -24,7 +29,29 @@ function App() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(form)
+        fetchRows();
+    }
+
+    const fetchRows = () => {
+        apiConsumer(
+            'http://localhost:4040/route/calculate',
+            {
+                method: 'POST',
+                body: JSON.stringify(form),
+                headers: {
+                    'Access-Control-Allow-Origin': 'http://localhost:4040',
+                }
+            })
+            .then((response) => response.json())
+            .then(({success, data, error_message}) => {
+                if (!success && error_message !== '') {
+                    alert('Oops, Something wrong with the API');
+
+                    return false;
+                }
+
+                setResult(data);
+            });
     }
 
   return (
@@ -78,7 +105,7 @@ function App() {
                           <div className="col-md-4 mb-3">
                               <label htmlFor="lastName">Total weight</label>
                               <input
-                                  type="text"
+                                  type="number"
                                   className="form-control"
                                   name="total_weight"
                                   value={form.total_weight}
@@ -96,30 +123,7 @@ function App() {
                       </div>
 
                       <hr className="mb-4" />
-                      <div className="col-md-12">
-                          <div
-                              className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                              <div id="infoDiv" className="col-md-8 p-4 d-flex flex-column position-static">
-                                  <p>Total distance: 100km</p>
-                                  <p>Estimated runtime(no of hours): 24h </p>
-                                  <p>Fuel consumption: 100km</p>
-                                  <p>Fuel efficiency: 100km</p>
-                                  <strong>Carbon emission: 100km</strong>
-                              </div>
-                              <div id="map" className="col-md-4 d-none d-lg-block">
-                                  <Map
-                                      route={''}
-                                      stops={[]}
-                                      // current={shipment.geometry.current_location}
-                                      // icon={shipment.geometry.outdated ? '/img/content/marker-outdated.png?v1' : '/img/content/marker-current.png?v1'}
-                                      // actualRoute={shipment.geometry.actual_route}
-                                      /*currentTooltip={(shipment.fleet && (shipment.fleet.truck || shipment.fleet.trailer))
-                                          && `<p><i class="svg svg-type-truck svg-gray-light"/> ${shipment.fleet.truck ? shipment.fleet.truck.license_plate : 'N/A'}</p>
-                    <p><i class="svg svg-type-trailer svg-gray-light"/> ${shipment.fleet.trailer ? shipment.fleet.trailer.license_plate : 'N/A'}</p>`}*/
-                                  />
-                              </div>
-                          </div>
-                      </div>
+                      <List entities={result} />
                   </form>
               </div>
 

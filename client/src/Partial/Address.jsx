@@ -3,7 +3,7 @@ import {AsyncTypeahead, Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import apiConsumer from "../helper/apiConsumer";
 
-const Address = ({name, value, onChange}) => {
+const Address = ({name, onChange}) => {
     const [selected, setSelected] = useState([]);
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +16,7 @@ const Address = ({name, value, onChange}) => {
             {
                 headers: {
                     'Access-Control-Allow-Origin': 'http://www.frida.vm',
+                    'Accept-Language': 'en_US',
                 }
             }
         )
@@ -34,7 +35,7 @@ const Address = ({name, value, onChange}) => {
     }
 
     const getUrl = (query) => {
-        return `/v2/addresses/search?q=${query}&r=null`;
+        return `http://taas.frida.vm/v2/addresses/search?q=${query}&r=null`;
     }
 
     useEffect(() => {
@@ -46,6 +47,8 @@ const Address = ({name, value, onChange}) => {
     return (
         <div>
             <AsyncTypeahead
+                selected={selected}
+                onChange={setSelected}
                 filterBy={filterBy}
                 id="async-example"
                 isLoading={isLoading}
