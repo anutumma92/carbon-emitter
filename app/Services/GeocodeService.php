@@ -20,6 +20,11 @@ class GeocodeService
         ]);
 
         $rawData = json_decode($res->getBody()->getContents(),true);
-        return $rawData['results'][0]['geometry']['location'];
+
+        if(!empty($rawData['results'][0])){
+            return $rawData['results'][0]['geometry']['location'];
+        }else{
+            throw new \Exception('No valid address found, please try again.');
+        }
     }
 }
