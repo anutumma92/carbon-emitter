@@ -60,7 +60,7 @@ class Routing extends BaseController
         return [
             "total_distance" => round($route['total_distance'],2),
             "route" => $route['route'],
-            "co2e" => $climatiqInfo['co2e'],
+            "co2e" => $climatiqInfo['constituent_gases'],
             "travel_time" => round($route['travel_time'] / 3600,2),
             "fuel_consumption" => round($route['total_distance'] / TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
             "fuel_efficiency" => round(TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
