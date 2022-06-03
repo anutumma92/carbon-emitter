@@ -86,7 +86,7 @@ class HereMapsService
         }
 
         $mapUrl = MapUrlService::encode($route);
-        $response['map'] = $mapUrl;
+        $response['route'] = $mapUrl;
         return $response;
     }
 

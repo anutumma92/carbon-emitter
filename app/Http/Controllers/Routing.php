@@ -58,15 +58,14 @@ class Routing extends BaseController
     {
         return [
             "total_distance" => $route['total_distance'],
-            "route" => "",
+            "route" => $route['route'],
             "co2e" => [
                 "here" => 87.54199999999999,
                 "climatic" => $climatiqInfo['co2e'],
             ],
-            "travel_time" => 100,
+            "travel_time" => $route['travel_time'],
             "fuel_consumption" => 20,
             "fuel_efficiency" => 5,
-            "fuel_burnt" => 2,
             "status" => ""
         ];
     }
