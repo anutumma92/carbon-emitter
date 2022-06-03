@@ -31,9 +31,9 @@ class HereMapsService
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function calculateRoute()
+    public function calculateRoute($latLonArray)
     {
-        $routeAlternatives = $this->getRouteQueryString();
+        $routeAlternatives = $this->getRouteQueryString($latLonArray);
         $responsePerAlternatives = [];
 
         foreach ($routeAlternatives as $index => $route)
@@ -99,11 +99,14 @@ class HereMapsService
         ];
     }
 
-    protected function getRouteQueryString() : array
+    protected function getRouteQueryString($latLonArray) : array
     {
         $extraFilters = $this->alternativesParameters;
 
         $alternativeParameters = [];
+
+        $startCoord = implode(',', $latLonArray['start']);
+        $endCoord = implode(',', $latLonArray['end']);
 
         foreach ($extraFilters as $index => $filter){
             $alternativeParameters[$index] = [
@@ -111,11 +114,10 @@ class HereMapsService
                 'app_code' => $this->app_code,
                 'metricSystem' => 'metric',
                 'maneuverAttributes' => 'shape',
-                'waypoint0' => 'geo!50.8857,14.81589',
-                'waypoint1' => 'geo!50.8681536,14.8308207',
+                'waypoint0' => 'geo!'.$startCoord,
+                'waypoint1' => 'geo!'.$endCoord,
             ] + $filter;
         }
-
         return $alternativeParameters;
     }
 
