@@ -15,6 +15,6 @@ abstract class TruckTypes
         self::UP_TO_7T => 5.13,
         self::UP_TO_12T => 4.67,
         self::UP_TO_40T => 2.86,
-        self::FRIGO => 3.3,
+//        self::FRIGO => 3.3,
     ];
 }

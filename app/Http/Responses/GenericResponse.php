@@ -19,7 +19,7 @@ class GenericResponse
     {
         return response([
             'success' => false,
-            'error_message' => $error->getMessage(),
+            'error_message' => $error->getMessage() . $error->getFile() .':'.$error->getLine(),
             'data' => []
         ]);
     }

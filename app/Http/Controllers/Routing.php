@@ -57,13 +57,16 @@ class Routing extends BaseController
 
     private function getResponsePerRoute($truckId, $route, $climatiqInfo)
     {
+        $defaultTruckEfficiency = TruckTypes::TRUCK_EFFICIENCY[TruckTypes::UP_TO_40T];
+        $roadFuelConsumption = round($route['total_distance'] / (TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? $defaultTruckEfficiency), 2);
+
         return [
             "total_distance" => round($route['total_distance'],2),
             "route" => $route['route'],
             "co2e" => $climatiqInfo['constituent_gases'],
-            "travel_time" => round($route['travel_time'] / 3600,2),
-            "fuel_consumption" => round($route['total_distance'] / TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
-            "fuel_efficiency" => round(TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
+            "travel_time" => round($route['travel_time'] / 3600,2), //-- After conversion, that will be in hours
+            "fuel_consumption" => $roadFuelConsumption,
+            "fuel_efficiency" => round(TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? $this->estimateFrigo($route['travel_time'], $route['total_distance'], $roadFuelConsumption), 2),
             "status" => ""
         ];
     }
@@ -81,5 +84,18 @@ class Routing extends BaseController
         ]);
 
         return $climatiqService->execute();
+    }
+
+    private function estimateFrigo($travelTimeSeconds, $totalDistance, $roadFuelConsumption)
+    {
+        $travelTimeHours = $travelTimeSeconds/3600;
+
+        $efficiencyFactor = 2.675; //Generator consumption
+        $generatorDiesel = $efficiencyFactor * $travelTimeHours;
+
+        $totalDiesel = $generatorDiesel + $roadFuelConsumption;
+
+        return $totalDistance / $totalDiesel;
+
     }
 }
