@@ -58,15 +58,15 @@ class Routing extends BaseController
     private function getResponsePerRoute($truckId, $route, $climatiqInfo)
     {
         return [
-            "total_distance" => $route['total_distance'],
+            "total_distance" => round($route['total_distance'],2),
             "route" => $route['route'],
             "co2e" => [
                 "here" => 87.54199999999999,
-                "climatic" => $climatiqInfo['co2e'],
+                "climatic" => round($climatiqInfo['co2e'], 2),
             ],
             "travel_time" => $route['travel_time'],
-            "fuel_consumption" => TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0 * $route['total_distance'],
-            "fuel_efficiency" => TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0,
+            "fuel_consumption" => round($route['total_distance'] / TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
+            "fuel_efficiency" => round(TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0, 2),
             "status" => ""
         ];
     }
