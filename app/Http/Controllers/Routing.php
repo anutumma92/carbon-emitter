@@ -65,8 +65,8 @@ class Routing extends BaseController
                 "climatic" => $climatiqInfo['co2e'],
             ],
             "travel_time" => $route['travel_time'],
-            "fuel_consumption" => TruckTypes::TRUCK_EFFICIENCY[$truckId] * $route['total_distance'],
-            "fuel_efficiency" => TruckTypes::TRUCK_EFFICIENCY[$truckId],
+            "fuel_consumption" => TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0 * $route['total_distance'],
+            "fuel_efficiency" => TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? 0,
             "status" => ""
         ];
     }
