@@ -76,7 +76,7 @@ class Routing extends BaseController
         $climatiqService = new ClimatiqService([
             'emission_factor' => $vehicle_type,
             'parameters' => [
-                'weight' => $total_weight,
+                'weight' => (float)$total_weight,
                 'weight_unit' => "kg",
                 'distance' => $total_distance,
                 'distance_unit' => "km"
