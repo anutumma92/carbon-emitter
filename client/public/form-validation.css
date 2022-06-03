@@ -9,3 +9,26 @@
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .lh-condensed { line-height: 1.25; }
+
+.footer {
+    position: relative;
+    margin-top: -150px; /* negative value of footer height */
+    height: 150px;
+    clear:both;
+    padding-top:20px;
+}
+
+
+html, body {
+    height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+}
+
+#root {
+    overflow:auto;
+    padding-bottom:150px; /* this needs to be bigger than footer height*/
+    min-height: 100%;
+}

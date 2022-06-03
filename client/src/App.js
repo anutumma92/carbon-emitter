@@ -133,9 +133,7 @@ function App() {
                   </form>
               </div>
 
-              <footer className="my-5 pt-5 text-muted text-center text-small">
-                  <p className="mb-1">© 2022-2022 - (2b || !2b)?</p>
-              </footer>
+
           </div>
       </div>
   );
