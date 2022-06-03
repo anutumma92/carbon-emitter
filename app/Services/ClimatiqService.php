@@ -38,7 +38,7 @@ class ClimatiqService
             'body' => json_encode($this->body)
         ]);
 
-        return $res->getBody()->getContents();
+        return (array) json_decode($res->getBody()->getContents());
     }
 
 }

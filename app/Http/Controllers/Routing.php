@@ -20,15 +20,8 @@ class Routing extends BaseController
 
             $response = [];
             foreach ($calculation as $route) {
-                $climatiqService = new ClimatiqService([
-                    'emission_factor' => $requestBody['vehicle_type'],
-                    'parameters' => [
-                        'weight' => $calculation['total_weight'],
-                        'weight_unit' => "kg",
-                        'distance' => $calculation['total_distance'],
-                        'distance_unit' => "km"
-                    ]
-                ]);
+                $climatiqInfo = $this->getClimatiqInfo($requestBody['vehicle_type'], $requestBody['total_weight'], $route['total_distance']);
+                $response[] = $this->getResponsePerRoute($route, $climatiqInfo);
             }
 
             return GenericResponse::success($response);
@@ -37,5 +30,37 @@ class Routing extends BaseController
         {
             return GenericResponse::error($error);
         }
+    }
+
+    private function getResponsePerRoute($route, $climatiqInfo)
+    {
+        return [
+            "total_distance" => $route['total_distance'],
+            "route" => "",
+            "co2e" => [
+                "here" => 87.54199999999999,
+                "climatic" => $climatiqInfo['co2e'],
+            ],
+            "travel_time" => 100,
+            "fuel_consumption" => 20,
+            "fuel_efficiency" => 5,
+            "fuel_burnt" => 2,
+            "status" => "best/cheapest/fastest/greenest"
+        ];
+    }
+
+    private function getClimatiqInfo($vehicle_type, $total_weight, $total_distance)
+    {
+        $climatiqService = new ClimatiqService([
+            'emission_factor' => $vehicle_type,
+            'parameters' => [
+                'weight' => $total_weight,
+                'weight_unit' => "kg",
+                'distance' => $total_distance,
+                'distance_unit' => "km"
+            ]
+        ]);
+
+        return $climatiqService->execute();
     }
 }
