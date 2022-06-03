@@ -33,38 +33,28 @@ class HereMapsService
      */
     public function calculateRoute($latLonArray)
     {
-        $routeAlternatives = $this->getRouteQueryString($latLonArray);
+        $alternativesConfig = $this->getRouteQueryString($latLonArray);
         $responsePerAlternatives = [];
 
-        foreach ($routeAlternatives as $index => $route)
+        foreach ($alternativesConfig as $route)
         {
             $client = new Client();
-            $res = $client->request('GET', $this->url, [
-                'query' => $route
-            ]);
+            $res = $client->request('GET', $this->url, ['query' => $route]);
+            $response = json_decode($res->getBody()->getContents(),true);
 
-            $rawData = json_decode($res->getBody()->getContents(),true);
-
-            $responseData = $this->filterResponse($rawData);
-            $responseData = $this->calculateFuel($responseData, '');
-            $responseData = $this->calculateMap($responseData, $rawData);
-
-            $responsePerAlternatives[$index] = $responseData;
+            foreach($response['response']['route'] as $alternatives){
+                $responseData = $this->filterResponse($alternatives);
+                $responseData = $this->calculateMap($responseData, $alternatives);
+                $responsePerAlternatives[] = $responseData;
+            }
         }
 
         return $responsePerAlternatives;
     }
 
-    protected function calculateFuel(array $response, ?string $truckType) : array
-    {
-        $response['fuel_burned'] = $response['total_distance'] / 12;
+    protected function calculateMap(array $response, array $alternatives){
 
-        return $response;
-    }
-
-    protected function calculateMap(array $response, array $rawData){
-
-        $legs = $rawData['response']['route'][0]['leg'] ?? [];
+        $legs = $alternatives['leg'] ?? [];
         $route = [];
         $length = 0;
 
@@ -93,9 +83,9 @@ class HereMapsService
     protected function filterResponse(array $response) : array
     {
         return [
-            'total_distance' => $response['response']['route'][0]['summary']['distance'] / 1000,
-            'travel_time' => $response['response']['route'][0]['summary']['travelTime'],
-            'travel_text' => $response['response']['route'][0]['summary']['text'],
+            'total_distance' => $response['summary']['distance'] / 1000,
+            'travel_time' => $response['summary']['travelTime'],
+            'travel_text' => $response['summary']['text'],
         ];
     }
 
@@ -116,6 +106,7 @@ class HereMapsService
                 'maneuverAttributes' => 'shape',
                 'waypoint0' => 'geo!'.$startCoord,
                 'waypoint1' => 'geo!'.$endCoord,
+                'alternatives' => 3
             ] + $filter;
         }
         return $alternativeParameters;

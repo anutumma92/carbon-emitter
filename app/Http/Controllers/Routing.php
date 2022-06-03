@@ -27,7 +27,7 @@ class Routing extends BaseController
             foreach ($calculation as $route) {
                 $climatiqInfo = $this->getClimatiqInfo($requestBody['vehicle_type'], $requestBody['total_weight'], $route['total_distance']);
                 $response[] = $this->getResponsePerRoute($requestBody['vehicle_type'], $route, $climatiqInfo);
-                $co2eArray[] = $climatiqInfo['co2e'];
+                $co2eArray[] = $climatiqInfo['constituent_gases']->co2e_total;
             }
 
             foreach (array_keys($co2eArray, min($co2eArray)) as $index) {
