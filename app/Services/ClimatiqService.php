@@ -33,9 +33,9 @@ class ClimatiqService
 
     public function execute()
     {
-        return [
-            'co2e' => 87.54199999999999
-        ];
+//        return [
+//            'co2e' => 87.54199999999999
+//        ];
         $res = $this->client->request('POST', env('CLIMATIQ_URL'), [
             'headers' => $this->headers,
             'body' => json_encode($this->body)
