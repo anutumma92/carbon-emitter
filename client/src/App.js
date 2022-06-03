@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './App.css';
 import Address from "./Partial/Address";
+import Map from "./Partial/Map";
 
 const vehicleTypes = {
     'freight_vehicle-vehicle_type_hgv-fuel_source_cng-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_na': 'CNG HGV (3.5t - 7.5t)',
@@ -106,7 +107,16 @@ function App() {
                                   <strong>Carbon emission: 100km</strong>
                               </div>
                               <div id="map" className="col-md-4 d-none d-lg-block">
-                                  Show map here
+                                  <Map
+                                      route={''}
+                                      stops={[]}
+                                      // current={shipment.geometry.current_location}
+                                      // icon={shipment.geometry.outdated ? '/img/content/marker-outdated.png?v1' : '/img/content/marker-current.png?v1'}
+                                      // actualRoute={shipment.geometry.actual_route}
+                                      /*currentTooltip={(shipment.fleet && (shipment.fleet.truck || shipment.fleet.trailer))
+                                          && `<p><i class="svg svg-type-truck svg-gray-light"/> ${shipment.fleet.truck ? shipment.fleet.truck.license_plate : 'N/A'}</p>
+                    <p><i class="svg svg-type-trailer svg-gray-light"/> ${shipment.fleet.trailer ? shipment.fleet.trailer.license_plate : 'N/A'}</p>`}*/
+                                  />
                               </div>
                           </div>
                       </div>
