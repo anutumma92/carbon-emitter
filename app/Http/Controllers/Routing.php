@@ -22,9 +22,15 @@ class Routing extends BaseController
             $calculation = $service->calculateRoute($startEndCoords);
 
             $response = [];
+            $co2eArray = [];
             foreach ($calculation as $route) {
                 $climatiqInfo = $this->getClimatiqInfo($requestBody['vehicle_type'], $requestBody['total_weight'], $route['total_distance']);
                 $response[] = $this->getResponsePerRoute($route, $climatiqInfo);
+                $co2eArray[] = $climatiqInfo['co2e'];
+            }
+
+            foreach (array_keys($co2eArray, min($co2eArray)) as $index) {
+                $response[$index]['status'] = 'greenest';
             }
 
             return GenericResponse::success($response);
@@ -61,7 +67,7 @@ class Routing extends BaseController
             "fuel_consumption" => 20,
             "fuel_efficiency" => 5,
             "fuel_burnt" => 2,
-            "status" => "best/cheapest/fastest/greenest"
+            "status" => ""
         ];
     }
 

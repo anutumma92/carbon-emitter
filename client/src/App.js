@@ -1,23 +1,30 @@
-import {useEffect, useState} from "react";
+import { useState } from "react";
 import './App.css';
+import Address from "./Partial/Address";
 
-function handleSubmit() {
-    alert('clciked')
-}
+const vehicleTypes = {
+    'freight_vehicle-vehicle_type_hgv-fuel_source_cng-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_na': 'CNG HGV (3.5t - 7.5t)',
+    'freight_vehicle-vehicle_type_hgv-fuel_source_cng-vehicle_weight_gt_7.5t_lt_12t-percentage_load_na': 'CNG HGV (7.5t - 12t)',
+    'freight_vehicle-vehicle_type_truck_light-fuel_source_cng-vehicle_weight_na-percentage_load_na': 'CNG light-duty truck'
+};
 
 function App() {
     const [form, setForm] = useState({
-        'pickup': '',
-        'drop_off': '',
-        'total_weight': '',
-        'vehicle_type': '',
-    })
+        'pickup': undefined,
+        'drop_off': undefined,
+        'total_weight': undefined,
+        'vehicle_type': undefined,
+    });
 
-    const test = (e) => {
-        console.log(form, 'form')
-
+    const handleChange = (field, value) => {
+        form[field] = value;
+        setForm(form);
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(form)
+    }
 
   return (
       <div className="App">
@@ -28,32 +35,54 @@ function App() {
                       <div className="row">
                           <div className="col-md-6 mb-3">
                               <label htmlFor="firstName">Pickup</label>
-                              <input type="text" className="form-control" id="pickup" placeholder="" value={form.pickup}
-                                     onChange={test.bind()} required="" />
+                              <Address
+                                  id="pickup"
+                                  tabIndex="0"
+                                  name="pickup"
+                                  value={form.pickup}
+                                  onChange={(name, value) => {
+                                      handleChange(name, value);
+                                  }}
+                              />
                           </div>
                           <div className="col-md-6 mb-3">
                               <label htmlFor="lastName">Drop Off</label>
-                              <input type="text" className="form-control" id="lastName" placeholder="" value=""
-                                     required="" />
-                              <div className="invalid-feedback">
-                                  Drop off is required.
-                              </div>
+                              <Address
+                                  id="drop_off"
+                                  tabIndex="1"
+                                  name="drop_off"
+                                  value={form.drop_off}
+                                  onChange={(name, value) => {
+                                      handleChange(name, value);
+                                  }}
+                              />
                           </div>
                       </div>
 
                       <div className="row">
                           <div className="col-md-4 mb-3">
                               <label htmlFor="lastName">Vehicle type</label>
-                              <input type="text" className="form-control" id="lastName" placeholder="" value=""
-                                     required="" />
-                              <div className="invalid-feedback">
-                                  Vehicle type is required.
-                              </div>
+                              <select
+                                  className="custom-select d-block w-100"
+                                  name="vehicle_type"
+                                  value={form.vehicle_type}
+                                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                              >
+                                  <option value="">Choose...</option>
+                                  {Object.keys(vehicleTypes).map((key) => (
+                                      < option key={key} value={key}>{vehicleTypes[key]}</option>
+                                  ))}
+                              </select>
                           </div>
                           <div className="col-md-4 mb-3">
                               <label htmlFor="lastName">Total weight</label>
-                              <input type="text" className="form-control" id="lastName" placeholder="" value=""
-                                     required="" />
+                              <input
+                                  type="text"
+                                  className="form-control"
+                                  name="total_weight"
+                                  value={form.total_weight}
+                                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                              />
                               <div className="invalid-feedback">
                                   Total weight is required.
                               </div>
