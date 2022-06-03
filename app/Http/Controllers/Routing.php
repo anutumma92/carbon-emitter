@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TruckTypes;
 use App\Http\Responses\GenericResponse;
 use App\Services\HereMapsService;
 use Laravel\Lumen\Routing\Controller as BaseController;
@@ -22,7 +23,7 @@ class Routing extends BaseController
             $co2eArray = [];
             foreach ($calculation as $route) {
                 $climatiqInfo = $this->getClimatiqInfo($requestBody['vehicle_type'], $requestBody['total_weight'], $route['total_distance']);
-                $response[] = $this->getResponsePerRoute($route, $climatiqInfo);
+                $response[] = $this->getResponsePerRoute($requestBody['vehicle_type'], $route, $climatiqInfo);
                 $co2eArray[] = $climatiqInfo['co2e'];
             }
 
@@ -38,7 +39,7 @@ class Routing extends BaseController
         }
     }
 
-    private function getResponsePerRoute($route, $climatiqInfo)
+    private function getResponsePerRoute($truckId, $route, $climatiqInfo)
     {
         return [
             "total_distance" => $route['total_distance'],
@@ -48,9 +49,8 @@ class Routing extends BaseController
                 "climatic" => $climatiqInfo['co2e'],
             ],
             "travel_time" => 100,
-            "fuel_consumption" => 20,
-            "fuel_efficiency" => 5,
-            "fuel_burnt" => 2,
+            "fuel_consumption" => TruckTypes::TRUCK_EFFICIENCY[$truckId] * $route['total_distance'],
+            "fuel_efficiency" => TruckTypes::TRUCK_EFFICIENCY[$truckId],
             "status" => ""
         ];
     }

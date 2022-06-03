@@ -4,13 +4,17 @@ namespace App\Enums;
 
 abstract class TruckTypes
 {
-    const CNG_HGV_3T_7T = '3T_7T';
-    const CNG_HGV_7T_12T = '7T_12T';
-    const CNG_LIGHT_DUTY_TRUCK = 'CNG light-duty truck';
+    const UP_TO_3T = 'freight_vehicle_wtt-vehicle_type_van-fuel_source_diesel-vehicle_weight_1.305t_lt_1.74t';
+    const UP_TO_7T = 'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_100';
+    const UP_TO_12T = 'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_17t-percentage_load_100';
+    const UP_TO_40T = 'freight_vehicle-vehicle_type_hgv_articulated-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_10';
+    const FRIGO = 'freight_vehicle-vehicle_type_hgv_articulated_refrig-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_100';
 
-    const TRUCK_TYPES = [
-        self::CNG_HGV_3T_7T => [ 'efficiency' =>  9.09091],
-        self::CNG_HGV_7T_12T => [ 'efficiency' =>  5],
-        self::CNG_LIGHT_DUTY_TRUCK => [ 'efficiency' =>  2.85714],
+    const TRUCK_EFFICIENCY = [
+        self::UP_TO_3T => 9.09,
+        self::UP_TO_7T => 5.13,
+        self::UP_TO_12T => 4.67,
+        self::UP_TO_40T => 2.86,
+        self::FRIGO => 3.3,
     ];
 }
