@@ -5,11 +5,11 @@ import apiConsumer from "./helper/apiConsumer";
 import List from "./List";
 
 const vehicleTypes = {
-    'freight_vehicle_wtt-vehicle_type_van-fuel_source_diesel-vehicle_weight_1.305t_lt_1.74t': 'UP_TO_3T',
-    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_100': 'UP_TO_7T',
-    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_17t-percentage_load_100': 'UP_TO_12T',
-    'freight_vehicle-vehicle_type_hgv_articulated-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_10': 'UP_TO_40T',
-    'freight_vehicle-vehicle_type_hgv_articulated_refrig-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_100': 'FRIGO'
+    'freight_vehicle_wtt-vehicle_type_van-fuel_source_diesel-vehicle_weight_1.305t_lt_1.74t': 'Diesel van (up to 3.5 tonnes)',
+    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_3.5t_lt_7.5t-percentage_load_100': 'Diesel rigid HGV (>3.5 - 7.5 tonnes)',
+    'freight_vehicle-vehicle_type_hgv_rigid-fuel_source_diesel-vehicle_weight_gt_17t-percentage_load_100': 'Diesel rigid HGV (>17t)',
+    'freight_vehicle-vehicle_type_hgv_articulated-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_10': 'Diesel articulated HGV (>33t)',
+    'freight_vehicle-vehicle_type_hgv_articulated_refrig-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_100': 'Diesel refrigerated articulated HGV (>33t)'
 }
 
 function App() {
@@ -25,6 +25,10 @@ function App() {
     const handleChange = (field, value) => {
         form[field] = value;
         setForm(form);
+    }
+
+    const handle = (e) => {
+        console.log(e)
     }
 
     const handleSubmit = (e) => {
@@ -93,17 +97,19 @@ function App() {
                               <select
                                   className="custom-select d-block w-100"
                                   name="vehicle_type"
-                                  value={form.vehicle_type}
-                                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                  defaultValue={form.vehicle_type}
+                                  onChange={(e) => {
+                                      handleChange(e.target.name, e.target.value)
+                                  }}
                               >
                                   <option value="">Choose...</option>
                                   {Object.keys(vehicleTypes).map((key) => (
-                                      < option key={key} value={key}>{vehicleTypes[key]}</option>
+                                      < option checked key={key} value={key}>{vehicleTypes[key]}</option>
                                   ))}
                               </select>
                           </div>
                           <div className="col-md-4 mb-3">
-                              <label htmlFor="lastName">Total weight</label>
+                              <label htmlFor="lastName">Total weight(kg)</label>
                               <input
                                   type="number"
                                   className="form-control"

@@ -11,7 +11,7 @@ abstract class TruckTypes
     const FRIGO = 'freight_vehicle-vehicle_type_hgv_articulated_refrig-fuel_source_diesel-vehicle_weight_gt_33t-percentage_load_100';
 
     const TRUCK_EFFICIENCY = [
-        self::UP_TO_3T => 9.09,
+        self::UP_TO_3T => 8,
         self::UP_TO_7T => 5.13,
         self::UP_TO_12T => 4.67,
         self::UP_TO_40T => 2.86,
