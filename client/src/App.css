@@ -46,7 +46,7 @@
 }
 
 #map {
-    background-color: grey;
+    background-color: white;
 }
 
 .logo {
@@ -57,4 +57,13 @@
     color: green;
     width: 30px;
     height: 30px;
+}
+
+#route-map .ol-viewport:nth-child(1) {
+    display: none;
+}
+
+.mapRoute {
+    flex: 1 0 100%;
+    height: 80%;
 }

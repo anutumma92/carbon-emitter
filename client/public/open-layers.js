@@ -192,7 +192,7 @@ app.registerModule('maps', function () {
             }
         }
 
-        var source = new ol.source.Vector({features: collection});
+        var source = new ol.source.Vector({features: collection, wrapX: false});
 
         var layer = new ol.layer.Vector({
             source: source,

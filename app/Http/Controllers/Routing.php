@@ -60,10 +60,15 @@ class Routing extends BaseController
         $defaultTruckEfficiency = TruckTypes::TRUCK_EFFICIENCY[TruckTypes::UP_TO_40T];
         $roadFuelConsumption = round($route['total_distance'] / (TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? $defaultTruckEfficiency), 2);
 
+        $co2eDetails = [];
+        foreach ($climatiqInfo['constituent_gases'] as $key => $value) {
+            $co2eDetails[$key] = $value ? round($value, 3) : null;
+        }
+
         return [
             "total_distance" => round($route['total_distance'],2),
             "route" => $route['route'],
-            "co2e" => $climatiqInfo['constituent_gases'],
+            "co2e" => $co2eDetails,
             "travel_time" => round($route['travel_time'] / 3600,2), //-- After conversion, that will be in hours
             "fuel_consumption" => $roadFuelConsumption,
             "fuel_efficiency" => round(TruckTypes::TRUCK_EFFICIENCY[$truckId] ?? $this->estimateFrigo($route['travel_time'], $route['total_distance'], $roadFuelConsumption), 2),

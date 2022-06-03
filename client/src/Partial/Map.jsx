@@ -27,7 +27,7 @@ export default class extends React.Component {
 
   render() {
     const {
-      className = 'route',
+      className = 'route mapRoute',
       route,
     } = this.props;
 
