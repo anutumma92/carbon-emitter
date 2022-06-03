@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TruckTypes;
 use App\Http\Responses\GenericResponse;
+use App\Services\GeocodeService;
 use App\Services\HereMapsService;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -15,9 +16,11 @@ class Routing extends BaseController
     {
         $requestBody = (array) json_decode($request->getContent());
 
+        $startEndCoords = $this->getCoordsForDropPoints($requestBody['pickup'],$requestBody['drop_off']);
+
         try {
             $service = new HereMapsService();
-            $calculation = $service->calculateRoute();
+            $calculation = $service->calculateRoute($startEndCoords);
 
             $response = [];
             $co2eArray = [];
@@ -37,6 +40,19 @@ class Routing extends BaseController
         {
             return GenericResponse::error($error);
         }
+    }
+
+    private function getCoordsForDropPoints($start, $end)
+    {
+        $geocoding = new GeocodeService();
+        $startCoords = $geocoding->getCoords($start);
+
+        $geocoding = new GeocodeService();
+        $endCoords = $geocoding->getCoords($end);
+
+        $coords = ['start' => $startCoords, 'end' => $endCoords];
+        return $coords;
+
     }
 
     private function getResponsePerRoute($truckId, $route, $climatiqInfo)

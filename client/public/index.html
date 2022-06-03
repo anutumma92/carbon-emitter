@@ -33,7 +33,7 @@
       <!-- Custom styles for this template -->
       <link href="./form-validation.css" rel="stylesheet">
   </head>
-  <body>
+  <body data-modules="maps">
   <header>
       <div class="collapse bg-dark" id="navbarHeader">
           <div class="container">
@@ -77,11 +77,20 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
+  <script src="./ol.js"></script>
+  <script type="text/javascript">
+      window.OpenLayersTilesSource = new ol.source.XYZ({
+          url: 'https://{1-4}.base.maps.api.here.com/maptile/2.1/mapnopttile/newest/reduced.day/{z}/{x}/{y}/256/png8?app_id={$this->appId}&app_code={$this->appCode}'
+      });
+  </script>
+
+   <script src="./app.js"></script>
     <script src="./jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="./popper.min.js"></script>
     <script src="./bootstrap.min.js"></script>
     <script src="./holder.min.js"></script>
     <script src="./bootstrap-autocomplete.js"></script>
+    <script src="./open-layers.js"></script>
   </body>
 </html>
